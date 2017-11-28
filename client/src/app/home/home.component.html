@@ -1,0 +1,14 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxFlex="100%">
+    <div fxLayoutAlign="center" style="width:100%">
+        <form #f="ngForm" (ngSubmit)="join()" fxFlex="75%">
+            <div fxLayout="column">
+                <mat-form-field hideRequiredMarker>
+                    <input matInput md-no-asterisk type="text" placeholder="Room name" [(ngModel)]="roomName" name="roomName" required autofocus autocomplete="off">
+                </mat-form-field>
+                <div fxLayoutAlign="center">
+                    <button mat-raised-button color="primary" type="submit" [disabled]="!f.valid">Join</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

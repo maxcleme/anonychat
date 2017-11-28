@@ -1,0 +1,13 @@
+<div fxLayout="row" fxLayoutAlign="end">
+    <button mat-raised-button (click)="quit()">Quit</button>
+</div>
+
+
+<div fxLayout="row" fxLayoutWrap>
+    <div fxFlex="25%">
+        <user [user]="this.me"></user>
+    </div>
+    <div fxFlex="25%" *ngFor="let user of allUsers">
+        <user [user]="user"></user>
+    </div>
+</div>

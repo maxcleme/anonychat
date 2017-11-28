@@ -1,0 +1,18 @@
+version: '3'
+services:
+    client:
+        image: nginx
+        restart: always
+        volumes:
+            - "./client/dist:/usr/share/nginx/html"
+        ports:
+            - "8888:80"
+    signaling:
+        image: golang:1.9.2-alpine
+        restart: always
+        volumes:
+          - .:/go/src/anonychat
+        working_dir: /go/src/anonychat
+        command: go run main.go
+        ports:
+            - "7777:8080"
