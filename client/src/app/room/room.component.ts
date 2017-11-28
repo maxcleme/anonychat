@@ -46,7 +46,7 @@ export class RoomComponent {
 
     start() {
         // Test WS
-        this.websocket = new WebSocket(`ws://${environment.signalingServer}/ws/${this.roomName}`);
+        this.websocket = new WebSocket(`${environment.signalingServer}/ws/${this.roomName}`);
         this.websocket.onopen = () => {
             this.userId = uuid();
             console.log('connected', this.userId);

@@ -8,5 +8,5 @@ export const environment = {
   iceServers: [{
     urls: "stun:stun.l.google.com:19302"
   }],
-  signalingServer: "localhost:8080"
+  signalingServer: "ws://localhost:8080"
 };
