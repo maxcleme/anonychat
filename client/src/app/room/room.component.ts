@@ -20,6 +20,10 @@ export class RoomComponent {
     userId: string;
     columnCount: number = 2;
 
+    localStream: MediaStream;
+    displayedStream: MediaStream;
+    sharedStream: MediaStream;
+
     recordVideo: boolean = true;
     recordAudio: boolean = false;
 
@@ -34,8 +38,16 @@ export class RoomComponent {
                 audio: true
             },
             (stream) => {
-                this.me.stream = stream;
+                stream.getAudioTracks().forEach(track => track.enabled = false);
+                this.sharedStream = stream.clone();
+                this.displayedStream = stream.clone();
+                this.me.stream = this.displayedStream;
                 this.start();
+
+
+                console.log("local", this.localStream.getAudioTracks().map(track => track.enabled));
+                console.log("displayed", this.displayedStream.getAudioTracks().map(track => track.enabled));
+                console.log("shared", this.sharedStream.getAudioTracks().map(track => track.enabled));
             },
             (err) => {
                 this.start();
@@ -44,11 +56,12 @@ export class RoomComponent {
     }
 
     onRecordVideoStateChange(state: boolean) {
-        this.me.stream.getVideoTracks().forEach(track => track.enabled = state);
+        this.sharedStream.getVideoTracks().forEach(track => track.enabled = state);
+        this.displayedStream.getVideoTracks().forEach(track => track.enabled = state);
     }
 
     onRecordAudioStateChange(state: boolean) {
-        this.me.stream.getAudioTracks().forEach(track => track.enabled = state);
+        this.sharedStream.getAudioTracks().forEach(track => track.enabled = state);
     }
 
     get allUsers(): Iterable<User> {
@@ -100,8 +113,8 @@ export class RoomComponent {
 
 
     quit() {
-        if (this.me.stream) {
-            this.me.stream.getTracks().forEach(track => track.stop());
+        if (this.localStream) {
+            this.localStream.getTracks().forEach(track => track.stop());
         }
         Array.from(this.users.values()).forEach(user => {
             if (user.pcLocal) {
@@ -150,7 +163,7 @@ export class RoomComponent {
                 this.sendRemoteCandidate(recipientId, e.candidate);
             }
         }
-        pcLocal.addStream(this.me.stream);
+        pcLocal.addStream(this.sharedStream);
         pcLocal.createOffer().then(desc => {
             pcLocal.setLocalDescription(desc);
             this.sendOffer(recipientId, desc);

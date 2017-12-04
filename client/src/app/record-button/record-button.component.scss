@@ -2,6 +2,11 @@ button {
     mat-icon.mat-warn {
         animation:softBlink 2s infinite;
     }
+
+    mat-icon.hidden {
+        position: absolute;
+        font-size: 0px;
+    }
 }
 
 

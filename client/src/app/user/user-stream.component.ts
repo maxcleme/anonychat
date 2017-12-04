@@ -10,10 +10,11 @@ export class UserStreamComponent implements OnChanges {
     @Input() stream: MediaStream;
     @Input() video: boolean;
     @Input() audio: boolean;
+    @Input() immutable: boolean;
 
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.stream) {
+        if (this.stream && !this.immutable) {
             if (this.video) {
                 this.stream.getVideoTracks().forEach(videoTrack => videoTrack.enabled = true);
             } else {

@@ -1,4 +1,5 @@
 <button mat-raised-button (click)="toggle()">
-    <mat-icon [color]="record ? 'warn' : ''">fiber_manual_record</mat-icon>
     {{text}}
+    <mat-icon [ngClass]="{'hidden' : record}">fiber_manual_record</mat-icon>
+    <mat-icon [ngClass]="{'hidden' : !record}" color="warn">fiber_manual_record</mat-icon>
 </button>

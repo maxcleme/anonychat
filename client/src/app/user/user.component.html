@@ -12,7 +12,7 @@
             </button>
         </div>
         <div fxLayoutAlign="center end">
-            <user-stream *ngIf="user.stream" [stream]="user.stream" [video]="videoEnabled" [audio]="audioEnabled" fxLayoutAlign="end end">
+            <user-stream *ngIf="user.stream" [stream]="user.stream" [video]="videoEnabled" [audio]="audioEnabled" [immutable]="!configurable" fxLayoutAlign="end end">
             </user-stream>
             <img width="300" height="200" style="object-fit:contain" *ngIf="!user.stream" src="/assets/user-4.svg">
         </div>
