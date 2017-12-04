@@ -11,12 +11,12 @@
 </div>
 
 <div fxLayout="row" fxLayoutAlign="center">
-    <section class="user-gallery" [ngStyle]="{'column-count' : columnCount}">
+    <div class="user-gallery" [ngStyle]="{'column-count' : columnCount}">
         <div>
             <user [user]="me" [configurable]="false"></user>
         </div>
         <div *ngFor="let user of allUsers">
             <user [user]="user" [configurable]="true"></user>
         </div>
-    </section>
+    </div>
 </div>

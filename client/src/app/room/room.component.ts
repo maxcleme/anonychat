@@ -18,9 +18,8 @@ export class RoomComponent {
     users: Map<string, User> = new Map<string, User>();
     me: User;
     userId: string;
-    columnCount: number = 2;
+    columnCount: number = 1;
 
-    localStream: MediaStream;
     displayedStream: MediaStream;
     sharedStream: MediaStream;
 
@@ -43,11 +42,6 @@ export class RoomComponent {
                 this.displayedStream = stream.clone();
                 this.me.stream = this.displayedStream;
                 this.start();
-
-
-                console.log("local", this.localStream.getAudioTracks().map(track => track.enabled));
-                console.log("displayed", this.displayedStream.getAudioTracks().map(track => track.enabled));
-                console.log("shared", this.sharedStream.getAudioTracks().map(track => track.enabled));
             },
             (err) => {
                 this.start();
@@ -113,8 +107,11 @@ export class RoomComponent {
 
 
     quit() {
-        if (this.localStream) {
-            this.localStream.getTracks().forEach(track => track.stop());
+        if (this.sharedStream) {
+            this.sharedStream.getTracks().forEach(track => track.stop());
+        }
+        if (this.displayedStream) {
+            this.displayedStream.getTracks().forEach(track => track.stop());
         }
         Array.from(this.users.values()).forEach(user => {
             if (user.pcLocal) {

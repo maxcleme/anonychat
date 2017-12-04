@@ -11,7 +11,7 @@
                 <mat-icon *ngIf="!audioEnabled">volume_off</mat-icon>
             </button>
         </div>
-        <div fxLayoutAlign="center end">
+        <div fxLayoutAlign="center start">
             <user-stream *ngIf="user.stream" [stream]="user.stream" [video]="videoEnabled" [audio]="audioEnabled" [immutable]="!configurable" fxLayoutAlign="end end">
             </user-stream>
             <img width="300" height="200" style="object-fit:contain" *ngIf="!user.stream" src="/assets/user-4.svg">
