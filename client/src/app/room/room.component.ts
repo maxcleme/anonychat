@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ElementRef, ViewChild } from "@angular/core";
+import { Component, ChangeDetectorRef, ElementRef, ViewChild, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 
 import { environment } from '../../environments/environment';
@@ -12,7 +12,7 @@ import * as uuid from 'uuid/v4';
     templateUrl: './room.component.html',
     styleUrls: ['./room.component.scss']
 })
-export class RoomComponent {
+export class RoomComponent implements OnDestroy {
     roomName: string;
     websocket: WebSocket;
     users: Map<string, User> = new Map<string, User>();
@@ -25,8 +25,20 @@ export class RoomComponent {
 
     recordVideo: boolean = true;
     recordAudio: boolean = false;
+    interval: any;
 
-    constructor(private route: ActivatedRoute, private router: Router, private ref: ChangeDetectorRef) { }
+    constructor(private route: ActivatedRoute, private router: Router, private ref: ChangeDetectorRef) {
+        const onDocumentHeightChange = () => {
+            if (window.innerHeight < document.documentElement.scrollHeight) {
+                this.columnCount++;
+            }
+        }
+        this.interval = setInterval(onDocumentHeightChange, 500);
+    }
+
+    ngOnDestroy(): void {
+        clearInterval(this.interval);
+    }
 
     ngOnInit() {
         this.route.params.subscribe(params => this.roomName = params['roomName']);
@@ -59,7 +71,7 @@ export class RoomComponent {
     }
 
     get allUsers(): Iterable<User> {
-        return this.users.values();
+        return Array.from(this.users.values());
     }
 
     start() {
@@ -100,7 +112,7 @@ export class RoomComponent {
             this.sendHello();
 
 
-            this.ref.detectChanges();
+            // this.ref.detectChanges();
         }
     }
 
@@ -135,7 +147,7 @@ export class RoomComponent {
             this.sendHelloResponse(msg.userId);
         }
         this.offerStreamTo(msg.userId);
-        this.ref.detectChanges();
+        // this.ref.detectChanges();
     }
 
     processHelloResponseMessage(msg: any) {
@@ -143,7 +155,7 @@ export class RoomComponent {
             this.users.set(msg.userId, new User(null, null));
         }
         this.offerStreamTo(msg.userId);
-        this.ref.detectChanges();
+        // this.ref.detectChanges();
     }
 
     offerStreamTo(recipientId: string) {
@@ -182,24 +194,18 @@ export class RoomComponent {
         }
         pcRemote.onaddstream = (event) => {
             this.users.get(msg.userId).stream = event.stream
-            this.ref.detectChanges();
-
-            if (document.body.clientHeight > window.innerHeight) {
-                this.columnCount++;
-                this.ref.detectChanges();
-            }
-
+            // this.ref.detectChanges();
         }
         pcRemote.onremovestream = (event) => {
             console.log('remove stream');
             this.users.delete(msg.userId)
-            this.ref.detectChanges();
+            // this.ref.detectChanges();
         }
         pcRemote.oniceconnectionstatechange = () => {
             if (pcRemote.iceConnectionState == 'disconnected') {
                 console.log('remove stream');
                 this.users.delete(msg.userId)
-                this.ref.detectChanges();
+                // this.ref.detectChanges();
             }
         }
 
