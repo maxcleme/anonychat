@@ -13,6 +13,9 @@ import { HomeComponent } from './home/home.component';
 import { RoomComponent } from './room/room.component';
 import { UserComponent } from './user/user.component';
 import { UserStreamComponent } from './user/user-stream.component';
+import { RecordButtonComponent } from './record-button/record-button.component';
+
+import { environment } from './../environments/environment';
 
 
 const appRoutes: Routes = [
@@ -27,7 +30,8 @@ const appRoutes: Routes = [
     HomeComponent,
     RoomComponent,
     UserComponent,
-    UserStreamComponent
+    UserStreamComponent,
+    RecordButtonComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,7 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
+      { enableTracing: !environment.production } // <-- debugging purposes only
     ),
 
     MatButtonModule,

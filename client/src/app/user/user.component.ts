@@ -5,13 +5,14 @@ import { OnChanges } from "@angular/core/src/metadata/lifecycle_hooks";
 @Component({
     selector: 'user',
     templateUrl: './user.component.html',
-    styleUrls: ['./user.component.css']
+    styleUrls: ['./user.component.scss']
 })
 export class UserComponent {
-    @Input("user") user: User;
+    @Input() user: User;
+    @Input() configurable: boolean;
     
     videoEnabled: boolean = true;
-    audioEnabled: boolean = false;
+    audioEnabled: boolean = true;
 
     constructor(private ref: ChangeDetectorRef){
     }

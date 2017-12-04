@@ -1,21 +1,20 @@
-<div fxLayout="column" style="box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);">
-    <div fxLayoutAlign="end center">
-        <div>
+<div class="container">
+    <div fxLayout="column">
+        <div fxLayoutAlign="end center" [ngStyle]="{'visibility': configurable ? 'visible' : 'hidden'}">
             <button mat-icon-button color="primary" (click)="toggleVideo()">
-                <mat-icon *ngIf="!videoEnabled">videocam</mat-icon>
-                <mat-icon *ngIf="videoEnabled">videocam_off</mat-icon>
+                <mat-icon *ngIf="videoEnabled">videocam</mat-icon>
+                <mat-icon *ngIf="!videoEnabled">videocam_off</mat-icon>
             </button>
 
             <button mat-icon-button color="primary" (click)="toggleAudio()">
-                <mat-icon *ngIf="!audioEnabled">volume_up</mat-icon>
-                <mat-icon *ngIf="audioEnabled">volume_off</mat-icon>
+                <mat-icon *ngIf="audioEnabled">volume_up</mat-icon>
+                <mat-icon *ngIf="!audioEnabled">volume_off</mat-icon>
             </button>
         </div>
-    </div>
-    <div fxLayoutAlign="end end">
-        <user-stream *ngIf="user.stream" [stream]="user.stream" [video]="videoEnabled" [audio]="audioEnabled"
-            fxLayoutAlign="end end">
-        </user-stream>
-        <img width="300" height="200" style="width:100%; object-fit:contain" *ngIf="!user.stream" src="/assets/user-4.svg">
+        <div fxLayoutAlign="center end">
+            <user-stream *ngIf="user.stream" [stream]="user.stream" [video]="videoEnabled" [audio]="audioEnabled" fxLayoutAlign="end end">
+            </user-stream>
+            <img width="300" height="200" style="object-fit:contain" *ngIf="!user.stream" src="/assets/user-4.svg">
+        </div>
     </div>
 </div>

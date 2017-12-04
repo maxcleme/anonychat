@@ -1,13 +1,22 @@
-<div fxLayout="row" fxLayoutAlign="end">
-    <button mat-raised-button (click)="quit()">Quit</button>
+<div fxLayout="row" fxLayoutAlign="space-between" style="margin-bottom: 10px">
+    <div>
+        <div *ngIf="me.stream">
+            <record-button text="Video" [record]="recordVideo" (onRecordStateChange)="onRecordVideoStateChange($event)"></record-button>
+            <record-button text="Audio" [record]="recordAudio" (onRecordStateChange)="onRecordAudioStateChange($event)"></record-button>
+        </div>
+    </div>
+    <div>
+        <button mat-raised-button (click)="quit()">Quit</button>
+    </div>
 </div>
 
-
-<div fxLayout="row" fxLayoutWrap>
-    <div fxFlex="25%">
-        <user [user]="this.me"></user>
-    </div>
-    <div fxFlex="25%" *ngFor="let user of allUsers">
-        <user [user]="user"></user>
-    </div>
+<div fxLayout="row" fxLayoutAlign="center">
+    <section class="user-gallery" [ngStyle]="{'column-count' : columnCount}">
+        <div>
+            <user [user]="me" [configurable]="false"></user>
+        </div>
+        <div *ngFor="let user of allUsers">
+            <user [user]="user" [configurable]="true"></user>
+        </div>
+    </section>
 </div>

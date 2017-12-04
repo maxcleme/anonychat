@@ -10,15 +10,18 @@ import * as uuid from 'uuid/v4';
 @Component({
     selector: 'room',
     templateUrl: './room.component.html',
-    styleUrls: ['./room.component.css']
+    styleUrls: ['./room.component.scss']
 })
 export class RoomComponent {
-
     roomName: string;
     websocket: WebSocket;
     users: Map<string, User> = new Map<string, User>();
     me: User;
     userId: string;
+    columnCount: number = 2;
+
+    recordVideo: boolean = true;
+    recordAudio: boolean = false;
 
     constructor(private route: ActivatedRoute, private router: Router, private ref: ChangeDetectorRef) { }
 
@@ -40,8 +43,16 @@ export class RoomComponent {
         );
     }
 
-    get allUsers() {
-        return Array.from(this.users.values());
+    onRecordVideoStateChange(state: boolean) {
+        this.me.stream.getVideoTracks().forEach(track => track.enabled = state);
+    }
+
+    onRecordAudioStateChange(state: boolean) {
+        this.me.stream.getAudioTracks().forEach(track => track.enabled = state);
+    }
+
+    get allUsers(): Iterable<User> {
+        return this.users.values();
     }
 
     start() {
@@ -162,6 +173,12 @@ export class RoomComponent {
         pcRemote.onaddstream = (event) => {
             this.users.get(msg.userId).stream = event.stream
             this.ref.detectChanges();
+
+            if (document.body.clientHeight > window.innerHeight) {
+                this.columnCount++;
+                this.ref.detectChanges();
+            }
+
         }
         pcRemote.onremovestream = (event) => {
             console.log('remove stream');

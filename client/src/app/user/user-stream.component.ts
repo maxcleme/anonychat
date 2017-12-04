@@ -4,7 +4,7 @@ import { OnChanges } from "@angular/core/src/metadata/lifecycle_hooks";
 @Component({
     selector: 'user-stream',
     templateUrl: './user-stream.component.html',
-    styleUrls: ['./user-stream.component.css']
+    styleUrls: ['./user-stream.component.scss']
 })
 export class UserStreamComponent implements OnChanges {
     @Input() stream: MediaStream;
