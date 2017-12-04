@@ -43,22 +43,19 @@ export class RoomComponent implements OnDestroy {
     ngOnInit() {
         this.route.params.subscribe(params => this.roomName = params['roomName']);
         this.me = new User(null, null);
-        navigator.getUserMedia(
+        navigator.mediaDevices.getUserMedia(
             {
                 video: true,
                 audio: true
-            },
-            (stream) => {
+            }).then(stream => {
                 stream.getAudioTracks().forEach(track => track.enabled = false);
                 this.sharedStream = stream.clone();
                 this.displayedStream = stream.clone();
                 this.me.stream = this.displayedStream;
                 this.start();
-            },
-            (err) => {
+            }).catch(err => {
                 this.start();
-            }
-        );
+            });
     }
 
     onRecordVideoStateChange(state: boolean) {

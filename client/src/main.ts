@@ -1,5 +1,5 @@
 import 'hammerjs';
-import 'webrtc-adapter/out/adapter_no_global'
+import 'webrtc-adapter/out/adapter'
 
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
